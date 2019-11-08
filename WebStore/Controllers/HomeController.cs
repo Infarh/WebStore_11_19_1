@@ -11,19 +11,10 @@ namespace WebStore.Controllers
     {
         private readonly IConfiguration _Configuration;
 
-        public HomeController(IConfiguration Configuration)
-        {
-            _Configuration = Configuration;
-        }
+        public HomeController(IConfiguration Configuration) => _Configuration = Configuration;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
 
-        public IActionResult ReadConfig()
-        {
-            return Content(_Configuration["CustomData"]);
-        }
+        public IActionResult ReadConfig() => Content(_Configuration["CustomData"]);
     }
 }
