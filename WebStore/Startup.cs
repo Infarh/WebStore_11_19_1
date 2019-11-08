@@ -24,6 +24,9 @@ namespace WebStore
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles(/*new StaticFileOptions { ServeUnknownFileTypes = true }*/);
+            app.UseDefaultFiles();
+
             //app.Run(async (context) =>
             //{
             //    await context.Response.WriteAsync(Configuration["CustomData"]);
