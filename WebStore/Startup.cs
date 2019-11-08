@@ -14,7 +14,7 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -24,9 +24,20 @@ namespace WebStore
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
+            app.UseStaticFiles(/*new StaticFileOptions { ServeUnknownFileTypes = true }*/);
+            app.UseDefaultFiles();
+
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync(Configuration["CustomData"]);
+            //});
+
+            //app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
