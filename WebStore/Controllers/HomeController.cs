@@ -10,27 +10,19 @@ namespace WebStore.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IConfiguration _Configuration;
-
-        public HomeController(IConfiguration Configuration) => _Configuration = Configuration;
+        public HomeController() { }
 
         public IActionResult Index() => View();
 
-        public IActionResult ReadConfig() => Content(_Configuration["CustomData"]);
+        public IActionResult Blog() => View();
+        public IActionResult BlogSingle() => View();
+        public IActionResult Cart() => View();
+        public IActionResult CheckOut() => View();
+        public IActionResult ContactUs() => View();
+        public IActionResult Login() => View();
+        public IActionResult ProductDetails() => View();
+        public IActionResult Shop() => View();
 
-        private static readonly List<EmployeeView> __Employees = new List<EmployeeView>
-        {
-            new EmployeeView { Id = 1, SecondName = "Иванов", FirstName = "Иван", Patronymic = "Иванович", Age = 35 },
-            new EmployeeView { Id = 1, SecondName = "Петров", FirstName = "Пётр", Patronymic = "Петрович", Age = 25 },
-            new EmployeeView { Id = 1, SecondName = "Сидоров", FirstName = "Сидор", Patronymic = "Сидорович", Age = 18 },
-        };
-
-        public IActionResult GetEmployes()
-        {
-            ViewBag.SomeData = "Hello World!";
-            ViewData["Test"] = "TestData";
-
-            return View(__Employees);
-        }
+        public IActionResult Error404() => View();
     }
 }
