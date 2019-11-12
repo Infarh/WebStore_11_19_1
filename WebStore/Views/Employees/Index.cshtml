@@ -22,8 +22,18 @@
     {
         <tr>
             <td>@employee.Id</td>
-            <td>@employee.SecondName</td>
-            <td>@employee.FirstName</td>
+            <td>
+                <a asp-action="Details" asp-route-Id="@employee.Id">
+                    @employee.SecondName
+                </a>
+            </td>
+            <td>
+                <a asp-action="DetailsName" 
+                   asp-route-FirstName="@employee.FirstName"
+                   asp-route-LastName="@employee.SecondName">
+                    @employee.FirstName
+                </a>
+            </td>
             <td>@employee.Patronymic</td>
             <td>@employee.Age</td>
         </tr>
