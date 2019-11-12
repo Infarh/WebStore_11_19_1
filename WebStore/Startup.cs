@@ -22,15 +22,11 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
-            app.UseStaticFiles(/*new StaticFileOptions { ServeUnknownFileTypes = true }*/);
+            app.UseStaticFiles();
             app.UseDefaultFiles();
-
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync(Configuration["CustomData"]);
-            //});
 
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>
