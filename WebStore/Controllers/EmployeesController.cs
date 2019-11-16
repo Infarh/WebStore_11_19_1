@@ -8,6 +8,7 @@ using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
+    //[Route("Users")]
     public class EmployeesController : Controller
     {
         private static readonly List<EmployeeView> __Employees = new List<EmployeeView>
@@ -25,6 +26,7 @@ namespace WebStore.Controllers
             return View(__Employees);
         }
 
+        //[Route("{id}")]
         public IActionResult Details(int? Id)
         {
             if (Id is null)
