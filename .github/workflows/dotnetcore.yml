@@ -17,5 +17,5 @@ jobs:
       run: dotnet build --configuration Release
     - uses: actions/upload-artifact@master
       with:
-        key: release
+        name: release
         path: WebStore_11_19_1/bin/Release/netcoreapp2.2 
