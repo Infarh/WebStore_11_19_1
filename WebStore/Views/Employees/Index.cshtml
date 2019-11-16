@@ -6,6 +6,8 @@
 
 <h3>@ViewBag.Title</h3>
 
+<a asp-action="Edit" class="btn btn-success">Создать</a>
+<hr/>
 <table class="table">
     <thead>
     <tr>
@@ -14,6 +16,7 @@
         <th>Имя</th>
         <th>Отчество</th>
         <th>Возраст</th>
+        <th></th>
     </tr>
     </thead>
 
@@ -36,6 +39,10 @@
             </td>
             <td>@employee.Patronymic</td>
             <td>@employee.Age</td>
+            <td>
+                <a asp-action="Edit" asp-route-Id="@employee.Id"><i class="fa fa-user-edit"></i></a>
+                <a asp-action="Delete" asp-route-Id="@employee.Id"><i class="fa fa-trash text-danger"></i></a>
+            </td>
         </tr>
     }
     </tbody>

@@ -4,33 +4,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
+using WebStore.Infrastructure.Interfaces;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
+    //[Route("Users")]
     public class EmployeesController : Controller
     {
-        private static readonly List<EmployeeView> __Employees = new List<EmployeeView>
-        {
-            new EmployeeView { Id = 1, SecondName = "Иванов", FirstName = "Иван", Patronymic = "Иванович", Age = 35 },
-            new EmployeeView { Id = 2, SecondName = "Петров", FirstName = "Пётр", Patronymic = "Петрович", Age = 25 },
-            new EmployeeView { Id = 3, SecondName = "Сидоров", FirstName = "Сидор", Patronymic = "Сидорович", Age = 18 },
-        };
+        private readonly IEmployeesData _EmployeesData;
+
+        public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
 
         public IActionResult Index()
         {
             ViewBag.SomeData = "Hello World!";
             ViewData["Test"] = "TestData";
 
-            return View(__Employees);
+            return View(_EmployeesData.GetAll());
         }
 
+        //[Route("{id}")]
         public IActionResult Details(int? Id)
         {
             if (Id is null)
                 return BadRequest();
 
-            var employee = __Employees.FirstOrDefault(e => e.Id == Id);
+            var employee = _EmployeesData.GetById((int)Id);
             if (employee is null)
                 return NotFound();
 
@@ -42,7 +42,7 @@ namespace WebStore.Controllers
             if (FirstName is null && LastName is null)
                 return BadRequest();
 
-            IEnumerable<EmployeeView> employees = __Employees;
+            var employees = _EmployeesData.GetAll();
             if (!string.IsNullOrWhiteSpace(FirstName))
                 employees = employees.Where(e => e.FirstName == FirstName);
             if (!string.IsNullOrWhiteSpace(LastName))
@@ -56,10 +56,67 @@ namespace WebStore.Controllers
             return View(nameof(Details), employee);
         }
 
+        public IActionResult Create() => View(new EmployeeView());
+
         [HttpPost]
-        public IActionResult Edit(int id, [FromBody] EmployeeView Employee)
+        public IActionResult Create(EmployeeView NewEmployee)
         {
-            return RedirectToAction(nameof(Index));
+            if (!ModelState.IsValid)
+                return View(NewEmployee);
+
+            _EmployeesData.Add(NewEmployee);
+            _EmployeesData.SaveChanges();
+
+            return RedirectToAction("Details", new { NewEmployee.Id });
+        }
+
+        public IActionResult Edit(int? Id)
+        {
+            if (Id is null) return View(new EmployeeView()); // Для создания нового сотрудника
+
+            if (Id < 0)
+                return BadRequest();
+
+            var employee = _EmployeesData.GetById((int)Id);
+            if (employee is null)
+                return NotFound();
+
+            return View(employee);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EmployeeView Employee)
+        {
+            if (Employee is null)
+                throw new ArgumentOutOfRangeException(nameof(Employee));
+
+            if (!ModelState.IsValid)
+                View(Employee);
+
+            var id = Employee.Id;
+            if (id == 0)
+                _EmployeesData.Add(Employee);
+            else
+                _EmployeesData.Edit(id, Employee);
+
+            _EmployeesData.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(int Id)
+        {
+            var employee = _EmployeesData.GetById(Id);
+            if (employee is null)
+                return NotFound();
+            return View(employee);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int Id)
+        {
+            _EmployeesData.Delete(Id);
+            return RedirectToAction("Index");
         }
     }
 }
