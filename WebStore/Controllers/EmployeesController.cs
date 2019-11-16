@@ -103,5 +103,20 @@ namespace WebStore.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Delete(int Id)
+        {
+            var employee = _EmployeesData.GetById(Id);
+            if (employee is null)
+                return NotFound();
+            return View(employee);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int Id)
+        {
+            _EmployeesData.Delete(Id);
+            return RedirectToAction("Index");
+        }
     }
 }
