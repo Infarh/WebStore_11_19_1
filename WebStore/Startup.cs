@@ -32,6 +32,19 @@ namespace WebStore
 
             app.UseStaticFiles();
             app.UseDefaultFiles();
+            app.UseCookiePolicy();
+            
+            //app.UseAuthentication();
+            //app.UseSession();
+
+            //app.UseResponseCaching();
+            //app.UseResponseCompression();
+
+            //app.UseWelcomePage("/welcome"); //Пример промежуточного ПО.
+
+            //app.Run(async context => await context.Response.WriteAsync("Hello World!")); // Безусловное выполнение (замыкает конвейер)
+
+            app.Map("/Hello", application => application.Run(async ctx => await ctx.Response.WriteAsync("World!")));
 
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>

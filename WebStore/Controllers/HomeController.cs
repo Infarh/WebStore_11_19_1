@@ -15,7 +15,11 @@ namespace WebStore.Controllers
     {
         public HomeController() { }
 
-        public IActionResult Index() => View();
+        public IActionResult Index()
+        {
+            //throw new InvalidOperationException("Отладочная ошибка в приложении");
+            return View();
+        }
 
         public IActionResult Blog() => View();
         public IActionResult BlogSingle() => View();
