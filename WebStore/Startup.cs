@@ -37,9 +37,9 @@ namespace WebStore
             app.UseStaticFiles();
             app.UseDefaultFiles();
             app.UseCookiePolicy();
-            
+
             //app.UseAuthentication();
-            //app.UseSession();
+            app.UseSession();
 
             //app.UseResponseCaching();
             //app.UseResponseCompression();
