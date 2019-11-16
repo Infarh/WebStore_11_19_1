@@ -18,4 +18,4 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: release
-        path: WebStore_11_19_1/bin/Release/netcoreapp2.2 
+        path: WebStore/bin/Release/netcoreapp2.2 
