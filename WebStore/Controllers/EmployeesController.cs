@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
+using WebStore.Infrastructure.Interfaces;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
@@ -11,19 +12,16 @@ namespace WebStore.Controllers
     //[Route("Users")]
     public class EmployeesController : Controller
     {
-        private static readonly List<EmployeeView> __Employees = new List<EmployeeView>
-        {
-            new EmployeeView { Id = 1, SecondName = "Иванов", FirstName = "Иван", Patronymic = "Иванович", Age = 35 },
-            new EmployeeView { Id = 2, SecondName = "Петров", FirstName = "Пётр", Patronymic = "Петрович", Age = 25 },
-            new EmployeeView { Id = 3, SecondName = "Сидоров", FirstName = "Сидор", Patronymic = "Сидорович", Age = 18 },
-        };
+        private readonly IEmployeesData _EmployeesData;
+
+        public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
 
         public IActionResult Index()
         {
             ViewBag.SomeData = "Hello World!";
             ViewData["Test"] = "TestData";
 
-            return View(__Employees);
+            return View(_EmployeesData.GetAll());
         }
 
         //[Route("{id}")]
@@ -32,7 +30,7 @@ namespace WebStore.Controllers
             if (Id is null)
                 return BadRequest();
 
-            var employee = __Employees.FirstOrDefault(e => e.Id == Id);
+            var employee = _EmployeesData.GetById((int) Id);
             if (employee is null)
                 return NotFound();
 
@@ -44,7 +42,7 @@ namespace WebStore.Controllers
             if (FirstName is null && LastName is null)
                 return BadRequest();
 
-            IEnumerable<EmployeeView> employees = __Employees;
+            var employees = _EmployeesData.GetAll();
             if (!string.IsNullOrWhiteSpace(FirstName))
                 employees = employees.Where(e => e.FirstName == FirstName);
             if (!string.IsNullOrWhiteSpace(LastName))
