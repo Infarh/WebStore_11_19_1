@@ -17,6 +17,10 @@ namespace WebStore
         {
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
 
+            //services.AddSingleton<TInterface, TImplementation>(); // - Единый объект на всё время жизни приложения с момента первого обращения к нему
+            //services.AddTransient<>(); // Один объект на каждый запрос экземпляра сервиса
+            //services.AddScoped<>(); // Один объект на время обработки одного входящего запроса (на время действия области)
+
             services.AddSession();
 
             services.AddMvc();
