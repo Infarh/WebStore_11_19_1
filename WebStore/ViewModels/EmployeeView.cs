@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebStore.ViewModels
@@ -12,6 +13,7 @@ namespace WebStore.ViewModels
         [Display(Name = "Имя")]
         [Required(ErrorMessage = "Имя фвляется обязательным", AllowEmptyStrings = false)]
         [StringLength(200, MinimumLength = 2, ErrorMessage = "Длина имени должна быть в пределах от 2 до 200 символов")]
+        [RegularExpression(@"(?:[А-ЯЁ][а-яё]+)|(?:[A-Z][a-z]+)", ErrorMessage = "Странное имя")]
         public string FirstName { get; set; }
 
         [Display(Name = "Фамилия")]

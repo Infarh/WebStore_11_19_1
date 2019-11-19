@@ -79,6 +79,12 @@ namespace WebStore.Controllers
             if (Employee is null)
                 throw new ArgumentOutOfRangeException(nameof(Employee));
 
+            if (Employee.Age < 18) 
+                ModelState.AddModelError(nameof(EmployeeView.Age), "Возраст не может быть меньше 18 лет");
+
+            if (Employee.FirstName == "123" && Employee.SecondName == "qwe") 
+                ModelState.AddModelError("", "Странное сочетание имени и фамилии");
+
             if (!ModelState.IsValid)
                 return View(Employee);
 
