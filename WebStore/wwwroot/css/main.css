@@ -8,9 +8,8 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background:;
   position: relative;
-  font-weight:400px;
+  font-weight:400;
 }
 
 ul li {
@@ -2141,7 +2140,7 @@ h2.title {
 
 .rating-area {
   border: 1px solid #F7F7F0;
-  direction: block;
+  direction: inherit;
   overflow: hidden;
 }
 

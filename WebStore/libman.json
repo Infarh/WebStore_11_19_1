@@ -32,11 +32,22 @@
     {
       "library": "font-awesome@5.11.2",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "prettyPhoto@3.1.6",
+      "destination": "wwwroot/lib/prettyPhoto/"
+    },
+    {
+      "library": "jquery-validate@1.19.1",
+      "destination": "wwwroot/lib/jquery-validate/",
+      "files": [
+        "jquery.validate.min.js",
+        "localization/messages_ru.min.js"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
     }
-  ,
-{
-  "library": "prettyPhoto@3.1.6",
-  "destination": "wwwroot/lib/prettyPhoto/"
-}
-]
+  ]
 }

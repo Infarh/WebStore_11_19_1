@@ -1,30 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
-    //[Route("Users")]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
 
         public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
 
-        public IActionResult Index()
-        {
-            ViewBag.SomeData = "Hello World!";
-            ViewData["Test"] = "TestData";
+        public IActionResult Index() => View(_EmployeesData.GetAll());
 
-            return View(_EmployeesData.GetAll());
-        }
-
-        //[Route("{id}")]
         public IActionResult Details(int? Id)
         {
             if (Id is null)
@@ -90,8 +79,14 @@ namespace WebStore.Controllers
             if (Employee is null)
                 throw new ArgumentOutOfRangeException(nameof(Employee));
 
+            if (Employee.Age < 18) 
+                ModelState.AddModelError(nameof(EmployeeView.Age), "Возраст не может быть меньше 18 лет");
+
+            if (Employee.FirstName == "123" && Employee.SecondName == "qwe") 
+                ModelState.AddModelError("", "Странное сочетание имени и фамилии");
+
             if (!ModelState.IsValid)
-                View(Employee);
+                return View(Employee);
 
             var id = Employee.Id;
             if (id == 0)

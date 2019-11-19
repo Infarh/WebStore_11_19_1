@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.ViewModels;
 
@@ -46,8 +45,7 @@ namespace WebStore.Infrastructure.Services
         public bool Delete(int id)
         {
             var db_employee = GetById(id);
-            if (db_employee is null) return false;
-            return _Employees.Remove(db_employee);
+            return db_employee != null && _Employees.Remove(db_employee);
         }
 
         public void SaveChanges() {  }

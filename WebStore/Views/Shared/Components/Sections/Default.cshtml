@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SectionViewModel>
+
+<h2>Category</h2>
+<div class="panel-group category-products" id="accordian">
+    <!--category-productsr-->
+
+    @foreach (var parent_section in Model)
+    {
+        if (parent_section.ChildSections.Count > 0)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordian" href="#@parent_section.Name.ToLower()">
+                            <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                            @parent_section.Name
+                        </a>
+                    </h4>
+                </div>
+                <div id="@parent_section.Name.ToLower()" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <ul>
+                            @foreach (var child_section in parent_section.ChildSections)
+                            {
+                                <li>
+                                    <a asp-controller="Catalog" asp-action="Shop" asp-route-SectionId="@child_section.Id">@child_section.Name </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a asp-controller="Catalog" asp-action="Shop" asp-route-SectionId="@parent_section.Id">
+                            @parent_section.Name
+                        </a>
+                    </h4>
+                </div>
+            </div>
+        }
+    }
+</div><!--/category-productsr-->
