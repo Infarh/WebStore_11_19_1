@@ -1,0 +1,39 @@
+﻿@model CatalogViewModel
+
+@{
+    ViewData["Title"] = "Shop";
+}
+
+<partial name="Partial/_Advertisement" />
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <partial name="Partial/_LeftSideBar" />
+            </div>
+
+            <div class="col-sm-9 padding-right">
+                <div class="features_items">
+                    <!--features_items-->
+                    <h2 class="title text-center">Features Items</h2>
+
+                    @foreach (var product in Model.Products)
+                    {
+                        @await Html.PartialAsync("Partial/_FeaturesItem",  product)
+
+                        @*<partial name="Partial/_FeaturesItem" model="@product"/>*@
+                    }
+
+                    <ul class="pagination">
+                        <li class="active"><a href="">1</a></li>
+                        <li><a href="">2</a></li>
+                        <li><a href="">3</a></li>
+                        <li><a href="">&raquo;</a></li>
+                    </ul>
+                </div><!--features_items-->
+            </div>
+        </div>
+    </div>
+</section>
+
