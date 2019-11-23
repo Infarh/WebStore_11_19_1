@@ -7,11 +7,12 @@ on:
 
 jobs:
   publish:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
+    - uses: ./github-action-markdownlint
+      
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
