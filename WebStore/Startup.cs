@@ -23,7 +23,8 @@ namespace WebStore
             services.AddTransient<WebStoreContextInitializer>();
 
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-            services.AddScoped<IProductData, InMemoryProductData>();
+            services.AddScoped<IProductData, SqlProductData>();
+            //services.AddScoped<IProductData, InMemoryProductData>();
 
             services.AddSession();
 
