@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebStore.DAL.Context;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Services;
 
@@ -15,12 +17,11 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<WebStoreContext>(opt => 
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddScoped<IProductData, InMemoryProductData>();
-
-            //services.AddSingleton<TInterface, TImplementation>(); // - Единый объект на всё время жизни приложения с момента первого обращения к нему
-            //services.AddTransient<>(); // Один объект на каждый запрос экземпляра сервиса
-            //services.AddScoped<>(); // Один объект на время обработки одного входящего запроса (на время действия области)
 
             services.AddSession();
 
