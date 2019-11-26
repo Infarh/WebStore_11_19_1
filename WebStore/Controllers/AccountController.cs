@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebStore.Domain.Entities.Identity;
 using WebStore.ViewModels.Identity;
 
@@ -13,11 +14,13 @@ namespace WebStore.Controllers
     {
         private readonly UserManager<User> _UserManager;
         private readonly SignInManager<User> _SignInManager;
+        private readonly ILogger<AccountController> _Logger;
 
-        public AccountController(UserManager<User> UserManager, SignInManager<User> SignInManager)
+        public AccountController(UserManager<User> UserManager, SignInManager<User> SignInManager, ILogger<AccountController> Logger)
         {
             _UserManager = UserManager;
             _SignInManager = SignInManager;
+            _Logger = Logger;
         }
 
         public IActionResult Register() => View(new RegisterUserViewModel());
@@ -33,15 +36,22 @@ namespace WebStore.Controllers
                 UserName = Model.UserName
             };
 
+            _Logger.LogInformation("Регистрация нового пользователя {0}", Model.UserName);
+
             var registration_result = await _UserManager.CreateAsync(user, Model.Password);
             if (registration_result.Succeeded)
             {
+                _Logger.LogInformation("Пользователь {0} успешно зарегистрирован", Model.UserName);
                 await _SignInManager.SignInAsync(user, false);
+                _Logger.LogInformation("Пользователь {0} вошёл в систему", Model.UserName);
                 return RedirectToAction("Index", "Home");
             }
 
             foreach (var error in registration_result.Errors)
                 ModelState.AddModelError("", error.Description);
+
+            _Logger.LogWarning("Ошибка при регистрации нового пользователя {0}:{1}",
+                Model.UserName, string.Join(", ", registration_result.Errors.Select(e => e.Description)));
 
             return View(Model);
         }
@@ -61,19 +71,26 @@ namespace WebStore.Controllers
 
             if (login_result.Succeeded)
             {
+                _Logger.LogInformation("Пользователь {0} вошёл в систему", Model.UserName);
+
                 if (Url.IsLocalUrl(Model.ReturnUrl))
                     return Redirect(Model.ReturnUrl);
                 return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError("", "Неверное имя пользователя, или пароль");
+
+            _Logger.LogWarning("Ошибка при входе пользователя {0} в систему", Model.UserName);
             return View(Model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            var user_name = User.Identity.Name;
             await _SignInManager.SignOutAsync();
+
+            _Logger.LogInformation("Пользователь {0} вышел в систему", user_name);
             return RedirectToAction("Index", "Home");
         }
     }
