@@ -1,0 +1,14 @@
+﻿<div class="shop-menu pull-right">
+    <ul class="nav navbar-nav">
+        <li><a href="#"><i class="fa fa-user"></i> @User.Identity.Name</a></li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li><a href="#"><i class="fa fa-key"></i> Админка</a></li>
+
+        }
+        <li><a href="#"><i class="fa fa-star"></i> Список желаний</a></li>
+        <li><a href="#"><i class="fa fa-crosshairs"></i> Заказы</a></li>
+        <li><a href="#"><i class="fa fa-shopping-cart"></i> Корзина</a></li>
+        <li><a asp-controller="Account" asp-action="Logout"><i class="fa fa-sign-out"></i> Выход</a></li>
+    </ul>
+</div>
