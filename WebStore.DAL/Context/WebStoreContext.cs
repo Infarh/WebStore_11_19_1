@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebStore.Domain.Entities;
+using WebStore.Domain.Entities.Identity;
 
 namespace WebStore.DAL.Context
 {
-    public class WebStoreContext : DbContext
+    public class WebStoreContext : IdentityDbContext<User, Role, string>
     {
         public DbSet<Brand> Brands { get; set; }
 
