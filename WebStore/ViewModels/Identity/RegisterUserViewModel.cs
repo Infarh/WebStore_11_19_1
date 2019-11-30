@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using WebStore.Controllers;
 
 namespace WebStore.ViewModels.Identity
 {
@@ -10,6 +12,7 @@ namespace WebStore.ViewModels.Identity
     {
         [Required]
         [MaxLength(256)]
+        [Remote(nameof(AccountController.IsNameFree), "Account", ErrorMessage = "Пользователь с таким именем уже существует.")]
         [Display(Name = "Имя пользователя")]
         public string UserName { get; set; }
 
