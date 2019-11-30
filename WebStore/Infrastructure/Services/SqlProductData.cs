@@ -9,7 +9,7 @@ using WebStore.Infrastructure.Interfaces;
 
 namespace WebStore.Infrastructure.Services
 {
-    public class SqlProductData : IProductData //Unit of work
+    public class SqlProductData : IProductData
     {
         private readonly WebStoreContext _db;
 
@@ -35,5 +35,10 @@ namespace WebStore.Infrastructure.Services
 
             return query.AsEnumerable(); /*query.ToArray();*/
         }
+
+        public Product GetProductById(int id) => _db.Products
+           .Include(p => p.Brand)
+           .Include(p => p.Section)
+           .FirstOrDefault(p => p.Id == id);
     }
 }
