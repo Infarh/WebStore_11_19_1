@@ -7,11 +7,9 @@ namespace WebStore.Domain.Entities.Identity
 {
     public class User : IdentityUser
     {
-        public string Description { get; set; }
-    }
+        public const string Administrator = "Administrator";
+        public const string AdminPasswordDefault = "AdminPassword";
 
-    public class Role : IdentityRole
-    {
         public string Description { get; set; }
     }
 }

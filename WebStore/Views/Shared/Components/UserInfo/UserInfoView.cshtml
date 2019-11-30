@@ -1,7 +1,8 @@
-﻿<div class="shop-menu pull-right">
+﻿@using WebStore.Domain.Entities.Identity
+<div class="shop-menu pull-right">
     <ul class="nav navbar-nav">
         <li><a href="#"><i class="fa fa-user"></i> @User.Identity.Name</a></li>
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole(Role.Administrator))
         {
             <li><a href="#"><i class="fa fa-key"></i> Админка</a></li>
 

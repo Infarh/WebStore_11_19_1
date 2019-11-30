@@ -7,13 +7,21 @@
                 <img src="~/images/shop/@Model.ImageUrl" alt="" />
                 <h2>@Model.Price</h2>
                 <p>@Model.Name</p>
-                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id" 
+                   class="btn btn-default add-to-cart">
+                    <i class="fa fa-shopping-cart"></i>
+                    Добавить в корзину
+                </a>
             </div>
             <div class="product-overlay">
                 <div class="overlay-content">
                     <h2>@Model.Price</h2>
-                    <p>@Model.Name</p>
-                    <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                    <p><a asp-controller="Catalog" asp-action="Details" asp-route-id="@Model.Id">@Model.Name</a></p>
+                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id" 
+                       class="btn btn-default add-to-cart">
+                        <i class="fa fa-shopping-cart"></i>
+                        Добавить в корзину
+                    </a>
                 </div>
             </div>
         </div>
