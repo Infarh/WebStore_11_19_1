@@ -28,6 +28,7 @@ namespace WebStore
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddScoped<IProductData, SqlProductData>();
             //services.AddScoped<IProductData, InMemoryProductData>();
+            services.AddScoped<ICartService, CookieCartService>();
 
             services.AddIdentity<User, Role>()
                .AddEntityFrameworkStores<WebStoreContext>()
