@@ -41,6 +41,7 @@ namespace WebStore.Controllers
             var registration_result = await _UserManager.CreateAsync(user, Model.Password);
             if (registration_result.Succeeded)
             {
+                await _UserManager.AddToRoleAsync(user, Role.User);
                 _Logger.LogInformation("Пользователь {0} успешно зарегистрирован", Model.UserName);
                 await _SignInManager.SignInAsync(user, false);
                 _Logger.LogInformation("Пользователь {0} вошёл в систему", Model.UserName);
