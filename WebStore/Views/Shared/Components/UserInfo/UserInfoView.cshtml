@@ -4,8 +4,7 @@
         <li><a href="#"><i class="fa fa-user"></i> @User.Identity.Name</a></li>
         @if (User.IsInRole(Role.Administrator))
         {
-            <li><a href="#"><i class="fa fa-key"></i> Админка</a></li>
-
+            <li><a asp-area="Admin" asp-controller="Home" asp-action="Index"><i class="fa fa-key"></i> Админка</a></li>
         }
         <li><a href="#"><i class="fa fa-star"></i> Список желаний</a></li>
         <li><a href="#"><i class="fa fa-crosshairs"></i> Заказы</a></li>
