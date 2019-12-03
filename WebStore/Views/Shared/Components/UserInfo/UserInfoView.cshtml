@@ -8,7 +8,7 @@
         }
         <li><a href="#"><i class="fa fa-star"></i> Список желаний</a></li>
         <li><a href="#"><i class="fa fa-crosshairs"></i> Заказы</a></li>
-        <li><a href="#"><i class="fa fa-shopping-cart"></i> Корзина</a></li>
+        <li><a asp-controller="Cart" asp-action="Details"><i class="fa fa-shopping-cart"></i> Корзина</a></li>
         <li>
             <form asp-controller="Account" asp-action="Logout" asp-antiforgery="true" method="post">
                 <button type="submit" class="btn btn-link"><i class="fa fa-sign-out"></i> Выход</button>

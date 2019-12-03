@@ -1,4 +1,4 @@
-﻿@model CartViewModel
+﻿@model DetailsViewModel
 @{
     ViewData["Title"] = "Корзина";
 }
@@ -24,36 +24,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                   @foreach (var item in Model.Items)
-                   {
-                       <tr>
-                           <td class="cart_product">
-                               <a asp-controller="Catalog" asp-action="Details" asp-route-id="@item.Key.Id">
-                                   <img src="~/images/cart/@item.Key.ImageUrl" alt="@item.Key.Name">
-                               </a>
-                           </td>
-                           <td class="cart_description">
-                               <h4><a  asp-controller="Catalog" asp-action="Details" asp-route-id="@item.Key.Id">@item.Key.Name</a></h4>
-                               <p>Web ID: @item.Key.Id.ToString("00000")</p>
-                           </td>
-                           <td class="cart_price">
-                               <p>@item.Key.Price.ToString("C")</p>
-                           </td>
-                           <td class="cart_quantity">
-                               <div class="cart_quantity_button">
-                                   <a class="cart_quantity_up" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Key.Id"> + </a>
-                                   <input class="cart_quantity_input" type="text" name="quantity" value="@item.Value" autocomplete="off" size="2">
-                                   <a class="cart_quantity_down"  asp-action="DecrimentFromCart" asp-route-id="@item.Key.Id"> - </a>
-                               </div>
-                           </td>
-                           <td class="cart_total">
-                               <p class="cart_total_price">@((item.Value * item.Key.Price).ToString("C"))</p>
-                           </td>
-                           <td class="cart_delete">
-                               <a class="cart_quantity_delete"  asp-action="RemoveFromCart" asp-route-id="@item.Key.Id"><i class="fa fa-times"></i></a>
-                           </td>
-                       </tr>
-                   }
+                    @{
+                        decimal SumCart = 0;
+                    }
+                    @foreach (var (product, quantity) in Model.CartViewModel.Items)
+                    {
+                        SumCart += quantity * product.Price;
+
+                        <tr>
+                            <td class="cart_product">
+                                <a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">
+                                    <img src="~/images/cart/@product.ImageUrl" alt="@product.Name">
+                                </a>
+                            </td>
+                            <td class="cart_description">
+                                <h4><a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">@product.Name</a></h4>
+                                <p>Web ID: @product.Id.ToString("00000")</p>
+                            </td>
+                            <td class="cart_price">
+                                <p>@product.Price.ToString("C")</p>
+                            </td>
+                            <td class="cart_quantity">
+                                <div class="cart_quantity_button">
+                                    <a class="cart_quantity_up" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id"> + </a>
+                                    <input class="cart_quantity_input" type="text" name="quantity" value="@quantity" autocomplete="off" size="2">
+                                    <a class="cart_quantity_down" asp-action="DecrimentFromCart" asp-route-id="@product.Id"> - </a>
+                                </div>
+                            </td>
+                            <td class="cart_total">
+                                <p class="cart_total_price">@((quantity * product.Price).ToString("C"))</p>
+                            </td>
+                            <td class="cart_delete">
+                                <a class="cart_quantity_delete" asp-action="RemoveFromCart" asp-route-id="@product.Id"><i class="fa fa-times"></i></a>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -63,76 +68,11 @@
 <section id="do_action">
     <div class="container">
         <div class="heading">
-            <h3>What would you like to do next?</h3>
-            <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+            <h3>Оформим заказ?</h3>
+            <p>Скидок нет...</p>
         </div>
         <div class="row">
-            <div class="col-sm-6">
-                <div class="chose_area">
-                    <ul class="user_option">
-                        <li>
-                            <input type="checkbox">
-                            <label>Use Coupon Code</label>
-                        </li>
-                        <li>
-                            <input type="checkbox">
-                            <label>Use Gift Voucher</label>
-                        </li>
-                        <li>
-                            <input type="checkbox">
-                            <label>Estimate Shipping & Taxes</label>
-                        </li>
-                    </ul>
-                    <ul class="user_info">
-                        <li class="single_field">
-                            <label>Country:</label>
-                            <select>
-                                <option>United States</option>
-                                <option>Bangladesh</option>
-                                <option>UK</option>
-                                <option>India</option>
-                                <option>Pakistan</option>
-                                <option>Ucrane</option>
-                                <option>Canada</option>
-                                <option>Dubai</option>
-                            </select>
-
-                        </li>
-                        <li class="single_field">
-                            <label>Region / State:</label>
-                            <select>
-                                <option>Select</option>
-                                <option>Dhaka</option>
-                                <option>London</option>
-                                <option>Dillih</option>
-                                <option>Lahore</option>
-                                <option>Alaska</option>
-                                <option>Canada</option>
-                                <option>Dubai</option>
-                            </select>
-
-                        </li>
-                        <li class="single_field zip-field">
-                            <label>Zip Code:</label>
-                            <input type="text">
-                        </li>
-                    </ul>
-                    <a class="btn btn-default update" href="">Get Quotes</a>
-                    <a class="btn btn-default check_out" href="">Continue</a>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="total_area">
-                    <ul>
-                        <li>Cart Sub Total <span>$59</span></li>
-                        <li>Eco Tax <span>$2</span></li>
-                        <li>Shipping Cost <span>Free</span></li>
-                        <li>Total <span>$61</span></li>
-                    </ul>
-                    <a class="btn btn-default update" href="">Update</a>
-                    <a class="btn btn-default check_out" href="">Check Out</a>
-                </div>
-            </div>
+            <partial name="Partial/_CheckOut" model="@Model.OrderViewModel" view-data="@(new ViewDataDictionary(ViewData) { { "SumCart", SumCart } })"/>
         </div>
     </div>
 </section><!--/#do_action-->

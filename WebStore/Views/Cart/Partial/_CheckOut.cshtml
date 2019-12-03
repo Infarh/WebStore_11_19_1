@@ -1,0 +1,50 @@
+﻿@model OrderViewModel
+
+<form method="post" asp-area="" asp-controller="Cart" asp-action="CheckOut" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="col-sm-6">
+
+        <div class="form-group">
+            <label asp-for="Name" class="sr-only"></label>
+            <input asp-for="Name" class="form-control" placeholder="Имя" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Phone" class="sr-only"></label>
+            <input asp-for="Phone" class="form-control" placeholder="Телефон" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Address" class="sr-only"></label>
+            <input asp-for="Address" class="form-control" placeholder="Адрес" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+    </div>
+
+    @{
+        ViewData.TryGetValue("SumCart", out var sum_cart);
+    }
+
+    <div class="col-sm-6">
+        @if (sum_cart != null)
+        {
+            var sum = (decimal)sum_cart;
+            <div class="total_area">
+                <ul>
+                    @*<li>Cart Sub Total <span>$59</span></li>*@
+                    <li>Налоги <span>0</span></li>
+                    <li>Доставка <span>0</span></li>
+                    <li>Итого: <span>@sum.ToString("C")</span></li>
+                </ul>
+                @if (sum > 0)
+                {
+                    @*<a class="btn btn-default update" href="">Update</a>*@
+                    <input class="btn btn-default check_out" type="submit" value="Оформить заказ" />
+                }
+            </div>
+        }
+    </div>
+</form>
