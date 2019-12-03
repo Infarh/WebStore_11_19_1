@@ -1,0 +1,46 @@
+﻿@model IEnumerable<WebStore.Domain.Entities.Product>
+
+@{
+    ViewData["Title"] = "Список товаров";
+}
+
+<p>
+    <a asp-action="Edit" class="btn btn-success">Добавить новый товар</a>
+</p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+
+        <th>@Html.DisplayNameFor(product => product.Name)</th>
+        <th>@Html.DisplayNameFor(product => product.Brand)</th>
+        <th>@Html.DisplayNameFor(product => product.Section)</th>
+        <th>@Html.DisplayNameFor(product => product.ImageUrl)</th>
+        <th>@Html.DisplayNameFor(product => product.Price)</th>
+
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@product.Id" title="Редактировать"><i class="glyphicon glyphicon-edit"></i></a>
+                </td>
+
+                <td>@Html.DisplayFor(m => product.Name)</td>
+                <td>@Html.DisplayFor(m => product.Brand.Name)</td>
+                <td>@Html.DisplayFor(m => product.Section.Name)</td>
+                <td><img src="~/images/shop/@product.ImageUrl" width="50" alt="@product.Name"/></td>
+                <td>@Html.DisplayFor(m => product.Price)</td>
+
+                <td>
+                    <a asp-action="Delete" asp-route-id="@product.Id" title="Удалить"><i class="glyphicon glyphicon-remove"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
