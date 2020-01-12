@@ -13,18 +13,7 @@
                 <partial name="Partial/_LeftSideBar" />
             </div>
 
-            <div class="col-sm-9 padding-right">
-                <div class="features_items">
-                    <!--features_items-->
-                    <h2 class="title text-center">Features Items</h2>
-
-                    @foreach (var product in Model.Products)
-                    {
-                        <partial name="Partial/_FeaturesItem" model="@product"/>
-                    }
-
-                </div><!--features_items-->
-            </div>
+            <partial name="Partial/_FeaturesItem" model="@Model.Products" />
         </div>
     </div>
 </section>
