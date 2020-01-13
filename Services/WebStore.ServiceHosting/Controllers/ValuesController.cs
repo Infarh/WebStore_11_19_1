@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebStore.ServiceHosting.Controllers
@@ -9,17 +10,11 @@ namespace WebStore.ServiceHosting.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        public ActionResult<IEnumerable<string>> Get() => Enumerable.Range(1, 10).Select(i => $"Value {i}").ToArray();
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
+        public ActionResult<string> Get(int id) => $"Value {id}";
 
         // POST api/values
         [HttpPost]
