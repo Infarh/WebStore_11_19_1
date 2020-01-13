@@ -1,0 +1,60 @@
+﻿@using WebStore.Domain.Entities.Identity
+@model IEnumerable<WebStore.Domain.ViewModels.EmployeeView>
+
+@{
+    ViewBag.Title = "Сотрудники";
+}
+
+<h3>@ViewBag.Title</h3>
+
+@if (User.IsInRole(Role.Administrator))
+{
+    <a asp-action="Edit" class="btn btn-success">Создать</a>
+}
+
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Возраст</th>
+            @if (User.IsInRole(Role.Administrator))
+            {
+                <th></th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.Id</td>
+                <td>
+                    <a asp-action="Details" asp-route-Id="@employee.Id">
+                        @employee.SecondName
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="DetailsName"
+                       asp-route-FirstName="@employee.FirstName"
+                       asp-route-LastName="@employee.SecondName">
+                        @employee.FirstName
+                    </a>
+                </td>
+                <td>@employee.Patronymic</td>
+                <td>@employee.Age</td>
+                @if (User.IsInRole(Role.Administrator))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-Id="@employee.Id"><i class="fa fa-user-edit"></i></a>
+                        <a asp-action="Delete" asp-route-Id="@employee.Id"><i class="fa fa-trash text-danger"></i></a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
