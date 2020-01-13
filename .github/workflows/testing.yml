@@ -4,22 +4,21 @@ on: [push, pull_request]
 
 jobs:
   test:
-    name: Test on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+    name: Testing
+    runs-on: ubuntu-latest    
     
     steps:
       - uses: actions/checkout@v1
       
-      - name: Use .NET 2.2.108
+      - name: Use .NET 3.1.100
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 2.2.108
+          dotnet-version: 3.1.100
           
       - name: Building
-        run: dotnet build --configuration Debug
+        run: dotnet build UI/WebStore/WebStore.csproj -c Debug
           
-      - name: Run Tests
-        run: dotnet test
+      #- name: Run Tests
+      #  run: |
+      #    dotnet test Tests/WebStore.Tests --no-build
+      #    dotnet test Tests/WebStore.Services.Tests --no-build
