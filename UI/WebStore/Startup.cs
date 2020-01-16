@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using WebStore.Clients.Values;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Infrastructure.Interfaces;
 using WebStore.Interfaces.Api;
+using WebStore.Interfaces.Services;
 using WebStore.Services.Database;
 using WebStore.Services.Product;
 
