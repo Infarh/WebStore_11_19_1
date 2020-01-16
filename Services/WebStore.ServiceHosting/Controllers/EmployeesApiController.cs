@@ -28,7 +28,7 @@ namespace WebStore.ServiceHosting.Controllers
         public void Add(EmployeeView Employee) => _EmployeesData.Add(Employee);
 
         [HttpPut("{id}"), ActionName("Put")]
-        public void Edit(int id, EmployeeView Employee) => _EmployeesData.Edit(id, Employee);
+        public EmployeeView Edit(int id, EmployeeView Employee) => _EmployeesData.Edit(id, Employee);
 
         [HttpDelete("{id}")]
         public bool Delete(int id) => _EmployeesData.Delete(id);
