@@ -22,7 +22,7 @@ namespace WebStore.Interfaces.Services
         /// <summary>Редактирование данных сотрудника по указанному идентификатору</summary>
         /// <param name="id">Идентификатор редактируемого сотрудника</param>
         /// <param name="Employee">Модель с данными сотрудника, которые надо внести в сервис</param>
-        void Edit(int id, EmployeeView Employee);
+        EmployeeView Edit(int id, EmployeeView Employee);
 
         /// <summary>Удаление сотрудника по заданному идентификатору</summary>
         /// <param name="id">Идентификатор удаляемого сотрудника</param>

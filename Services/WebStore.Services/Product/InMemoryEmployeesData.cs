@@ -28,18 +28,20 @@ namespace WebStore.Services.Product
             _Employees.Add(Employee);
         }
 
-        public void Edit(int id, EmployeeView Employee)
+        public EmployeeView Edit(int id, EmployeeView Employee)
         {
             if (Employee is null)
                 throw new ArgumentNullException(nameof(Employee));
 
             var db_employee = GetById(id);
-            if(db_employee is null) return;
+            if(db_employee is null) return null;
 
             db_employee.FirstName = Employee.FirstName;
             db_employee.SecondName = Employee.SecondName;
             db_employee.Patronymic = Employee.Patronymic;
             db_employee.Age = Employee.Age;
+
+            return db_employee;
         }
 
         public bool Delete(int id)
