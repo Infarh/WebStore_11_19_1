@@ -20,6 +20,8 @@ namespace WebStore.ServiceHosting.Controllers
 
         /* ---------------------------------------------------------------- */
 
+        /// <summary>Получение всех пользователей системы</summary>
+        /// <returns>Перечисление пользователей, зарегистрированных в системе</returns>
         [HttpGet("AllRoles")]
         public async Task<IEnumerable<Role>> GetAllRoles() => await _RoleStore.Roles.ToArrayAsync();
 
