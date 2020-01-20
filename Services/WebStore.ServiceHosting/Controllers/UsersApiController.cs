@@ -20,9 +20,9 @@ namespace WebStore.ServiceHosting.Controllers
     [ApiController]
     public class UsersApiController : ControllerBase
     {
-        private readonly UserStore<User> _UserStore;
+        private readonly UserStore<User, Role, WebStoreContext> _UserStore;
 
-        public UsersApiController(WebStoreContext db) => _UserStore = new UserStore<User>(db);
+        public UsersApiController(WebStoreContext db) => _UserStore = new UserStore<User, Role, WebStoreContext>(db);
 
         #region Users
 
