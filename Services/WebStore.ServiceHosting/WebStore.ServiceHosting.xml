@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebStore.ServiceHosting</name>
+    </assembly>
+    <members>
+        <member name="M:WebStore.ServiceHosting.Controllers.RolesApiController.GetAllRoles">
+            <summary>Получение всех пользователей системы</summary>
+            <returns>Перечисление пользователей, зарегистрированных в системе</returns>
+        </member>
+    </members>
+</doc>
