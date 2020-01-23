@@ -15,12 +15,16 @@ namespace WebStore.Clients.Identity
 
         #region IRoleStore<Role>
 
-        public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancel) =>
-            await (await PostAsync(_ServiceAddress, role, cancel))
-                .Content
-                .ReadAsAsync<bool>(cancel)
+        public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancel)
+        {
+            var response = await PostAsync(_ServiceAddress, role, cancel);
+            var result = await response
+               .Content
+               .ReadAsAsync<bool>(cancel);
+            return result
                 ? IdentityResult.Success
                 : IdentityResult.Failed();
+        }
 
         public async Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancel) =>
             await (await PutAsync(_ServiceAddress, role, cancel))

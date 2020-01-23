@@ -99,7 +99,7 @@ namespace WebStore.Clients.Identity
 
         public async Task AddToRoleAsync(User user, string role, CancellationToken cancel)
         {
-            await PostAsync($"{_ServiceAddress}/Role/{role}", user, cancel);
+            await PostAsync($"{_ServiceAddress}/Role/{role}", user, cancel).ConfigureAwait(false);
         }
 
         public async Task RemoveFromRoleAsync(User user, string role, CancellationToken cancel)

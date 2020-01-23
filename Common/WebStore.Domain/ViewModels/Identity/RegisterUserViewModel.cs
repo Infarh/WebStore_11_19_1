@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebStore.Domain.ViewModels.Identity
 {
@@ -6,7 +7,7 @@ namespace WebStore.Domain.ViewModels.Identity
     {
         [Required]
         [MaxLength(256)]
-        //[Remote(nameof(AccountController.IsNameFree), "Account", ErrorMessage = "Пользователь с таким именем уже существует.")]
+        [Remote("IsNameFree", "Account", ErrorMessage = "Пользователь с таким именем уже существует.")]
         [Display(Name = "Имя пользователя")]
         public string UserName { get; set; }
 
