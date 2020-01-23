@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
 using WebStore.Domain.DTO.Orders;
 using WebStore.Domain.Entities;
@@ -16,11 +17,13 @@ namespace WebStore.Services.Product
     {
         private readonly WebStoreContext _db;
         private readonly UserManager<User> _UserManager;
+        private readonly Logger<SqlOrderService> _Logger;
 
-        public SqlOrderService(WebStoreContext db, UserManager<User> UserManager)
+        public SqlOrderService(WebStoreContext db, UserManager<User> UserManager, Logger<SqlOrderService> Logger)
         {
             _db = db;
             _UserManager = UserManager;
+            _Logger = Logger;
         }
 
         public IEnumerable<OrderDTO> GetUserOrders(string UserName) => _db.Orders

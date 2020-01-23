@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using WebStore.Clients.Base;
 using WebStore.Domain.DTO.Identity;
 using WebStore.Domain.Entities.Identity;
@@ -16,7 +17,8 @@ namespace WebStore.Clients.Identity
 {
     public class UsersClient : BaseClient, IUsersClient
     {
-        public UsersClient(IConfiguration config) : base(config, "api/users") { }
+        private readonly ILogger<UsersClient> _Logger;
+        public UsersClient(IConfiguration config, ILogger<UsersClient> Logger) : base(config, "api/users") => _Logger = Logger;
 
         #region Implementation of IUserStore<User>
 
@@ -38,7 +40,9 @@ namespace WebStore.Clients.Identity
 
         public async Task SetUserNameAsync(User user, string name, CancellationToken cancel)
         {
+            _Logger.LogInformation("Изменение имени пользователя {0} с {1} на {2}", user.Id, user.UserName, name);
             user.UserName = name;
+
             await PostAsync($"{_ServiceAddress}/UserName/{name}", user, cancel);
         }
 
@@ -99,11 +103,13 @@ namespace WebStore.Clients.Identity
 
         public async Task AddToRoleAsync(User user, string role, CancellationToken cancel)
         {
+            _Logger.LogInformation("Пользователю {0} назначается роль {1}", user.UserName ?? user.Id, role);
             await PostAsync($"{_ServiceAddress}/Role/{role}", user, cancel).ConfigureAwait(false);
         }
 
         public async Task RemoveFromRoleAsync(User user, string role, CancellationToken cancel)
         {
+            _Logger.LogInformation("У пользователя {0} удаляется роль {1}", user.UserName ?? user.Id, role);
             await PostAsync($"{_ServiceAddress}/Role/Delete/{role}", user, cancel);
         }
 
