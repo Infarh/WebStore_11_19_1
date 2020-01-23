@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 
@@ -13,12 +14,18 @@ namespace WebStore.Services.Database
         private readonly WebStoreContext _db;
         private readonly UserManager<User> _UserManager;
         private readonly RoleManager<Role> _RoleManager;
+        private readonly ILogger<WebStoreContextInitializer> _Logger;
 
-        public WebStoreContextInitializer(WebStoreContext db, UserManager<User> UserManager, RoleManager<Role> RoleManager)
+        public WebStoreContextInitializer(
+            WebStoreContext db, 
+            UserManager<User> UserManager, 
+            RoleManager<Role> RoleManager,
+            ILogger<WebStoreContextInitializer> Logger)
         {
             _db = db;
             _UserManager = UserManager;
             _RoleManager = RoleManager;
+            _Logger = Logger;
         }
 
         public async Task InitializeAsync()
@@ -91,7 +98,11 @@ namespace WebStore.Services.Database
                 if (creation_result.Succeeded)
                     await _UserManager.AddToRoleAsync(admin, Role.Administrator);
                 else
-                    throw new InvalidOperationException($"Ошибка при создании администратора в БД {string.Join(", ", creation_result.Errors.Select(e => e.Description))}");
+                {
+                    var errors = string.Join(", ", creation_result.Errors.Select(e => e.Description));
+                    _Logger.LogError("Ошибка при создании пользователя Администратора в БД {0}", errors);
+                    throw new InvalidOperationException($"Ошибка при создании администратора в БД {errors}");
+                }
             }
         }
     }
