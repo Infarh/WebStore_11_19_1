@@ -19,6 +19,4 @@ jobs:
         run: dotnet build UI/WebStore/WebStore.csproj -c Debug
           
       - name: Run Tests
-        run: |
-          dotnet test Tests/WebStore.Tests --no-build
-          dotnet test Tests/WebStore.Services.Tests --no-build
+        run: dotnet test
