@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebStore.Controllers
 {
@@ -14,5 +15,7 @@ namespace WebStore.Controllers
         public IActionResult ProductDetails() => View();
         public IActionResult Shop() => View();
         public IActionResult Error404() => View();
+
+        public IActionResult ThrowException() => throw new ApplicationException("Тестовая ошибка в программе");
     }
 }

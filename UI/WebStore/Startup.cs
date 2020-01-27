@@ -13,6 +13,7 @@ using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 using WebStore.Logger;
@@ -81,7 +82,7 @@ namespace WebStore
 
                 opt.LoginPath = "/Account/Login";
                 opt.LogoutPath = "/Account/Logout";
-                opt.AccessDeniedPath = "/Account/AccessDenided";
+                opt.AccessDeniedPath = "/Account/AccessDenied";
 
                 opt.SlidingExpiration = true;
             });
@@ -108,6 +109,8 @@ namespace WebStore
             app.UseAuthentication();
 
             app.UseSession();
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseMvc(routes =>
             {
