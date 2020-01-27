@@ -10,6 +10,7 @@ using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Map;
 
 namespace WebStore.Services.Product
 {
@@ -31,37 +32,12 @@ namespace WebStore.Services.Product
            .Include(order => order.OrderItems)
            .Where(order => order.User.UserName == UserName)
            .ToArray()
-           .Select(o => new OrderDTO
-            {
-                Phone = o.Phone,
-                Address = o.Address,
-                Date = o.Date,
-                OrderItems = o.OrderItems.Select(item => new OrderItemDTO
-                {
-                    Id = item.Id,
-                    Price = item.Price,
-                    Quantity = item.Quantity
-                })
-            });
+           .Select(OrderMapper.ToDTO);
 
-        public OrderDTO GetOrderById(int id)
-        {
-            var o = _db.Orders
+        public OrderDTO GetOrderById(int id) =>
+            _db.Orders
                .Include(order => order.OrderItems)
-               .FirstOrDefault(order => order.Id == id);
-            return o is null ? null : new OrderDTO
-            {
-                Phone = o.Phone,
-                Address = o.Address,
-                Date = o.Date,
-                OrderItems = o.OrderItems.Select(item => new OrderItemDTO
-                {
-                    Id = item.Id,
-                    Price = item.Price,
-                    Quantity = item.Quantity
-                })
-            };
-        }
+               .FirstOrDefault(order => order.Id == id).ToDTO();
 
         public OrderDTO CreateOrder(CreateOrderModel OrderModel, string UserName)
         {
@@ -99,18 +75,7 @@ namespace WebStore.Services.Product
 
                 _db.SaveChanges();
                 transaction.Commit();
-                return new OrderDTO
-                {
-                    Phone = order.Phone,
-                    Address = order.Address,
-                    Date = order.Date,
-                    OrderItems = order.OrderItems.Select(item => new OrderItemDTO
-                    {
-                        Id = item.Id,
-                        Price = item.Price,
-                        Quantity = item.Quantity
-                    })
-                };
+                return order.ToDTO();
             }
         }
     }
