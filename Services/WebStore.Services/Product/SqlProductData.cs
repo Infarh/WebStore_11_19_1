@@ -33,7 +33,11 @@ namespace WebStore.Services.Product
             if (Filter?.SectionId != null)
                 query = query.Where(product => product.SectionId == Filter.SectionId);
 
-            return query.AsEnumerable().Select(ProductMapper.ToDTO);
+            return query
+               .Include(p => p.Brand)
+               .Include(p => p.Section)
+               .AsEnumerable()
+               .Select(ProductMapper.ToDTO);
         }
 
         public ProductDTO GetProductById(int id) =>
