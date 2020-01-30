@@ -11,7 +11,8 @@ namespace WebStore.Services.Map
             ImageUrl = product.ImageUrl,
             Price = product.Price,
             Order = product.Order,
-            Brand = product.Brand.ToDTO()
+            Brand = product.Brand.ToDTO(),
+            Section = product.Section.ToDTO()
         };
 
         public static Domain.Entities.Product FromDTO(this ProductDTO product) => product is null ? null : new Domain.Entities.Product
@@ -22,7 +23,8 @@ namespace WebStore.Services.Map
             Price = product.Price,
             Order = product.Order,
             BrandId = product.Brand?.Id,
-            Brand = product.Brand.FromDTO()
+            Brand = product.Brand.FromDTO(),
+            Section = product.Section.FromDTO()
         };
     }
 }

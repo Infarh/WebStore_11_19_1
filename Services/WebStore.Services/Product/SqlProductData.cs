@@ -19,9 +19,13 @@ namespace WebStore.Services.Product
            //.Include(section => section.Products)
            .AsEnumerable();
 
+        public Section GetSectionById(int id) => _db.Sections.FirstOrDefault(s => s.Id == id);
+
         public IEnumerable<Brand> GetBrands() => _db.Brands
            //.Include(brand => brand.Products)
            .AsEnumerable();
+
+        public Brand GetBrandById(int id) => _db.Brands.FirstOrDefault(b => b.Id == id);
 
         public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null)
         {
