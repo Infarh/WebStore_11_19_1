@@ -29,7 +29,7 @@ namespace WebStore.ServiceHosting.Controllers
         public IEnumerable<Brand> GetBrands() => _ProductData.GetBrands();
 
         [HttpGet("brands/{id}")]
-        public Brand GetBrandById(int id) => GetBrandById(id);
+        public Brand GetBrandById(int id) => _ProductData.GetBrandById(id);
 
         [HttpPost, ActionName("Post")]
         public IEnumerable<ProductDTO> GetProducts([FromBody] ProductFilter Filter = null) => _ProductData.GetProducts(Filter);
