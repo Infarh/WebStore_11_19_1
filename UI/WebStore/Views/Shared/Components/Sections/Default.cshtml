@@ -1,10 +1,10 @@
-﻿@model IEnumerable<SectionViewModel>
+﻿@model SectionCompleteViewModel
 
 <h2>Category</h2>
 <div class="panel-group category-products" id="accordian">
     <!--category-productsr-->
 
-    @foreach (var parent_section in Model)
+    @foreach (var parent_section in Model.Sections)
     {
         if (parent_section.ChildSections.Count > 0)
         {
@@ -22,8 +22,12 @@
                         <ul>
                             @foreach (var child_section in parent_section.ChildSections)
                             {
-                                <li>
-                                    <a asp-controller="Catalog" asp-action="Shop" asp-route-SectionId="@child_section.Id">@child_section.Name </a>
+                                <li @(child_section.Id == Model.CurrentSectionId ? "class=active" : null)>
+                                    <a asp-controller="Catalog"
+                                       asp-action="Shop"
+                                       asp-route-SectionId="@child_section.Id">
+                                        @child_section.Name
+                                    </a>
                                 </li>
                             }
                         </ul>
@@ -36,7 +40,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a asp-controller="Catalog" asp-action="Shop" asp-route-SectionId="@parent_section.Id">
+                        <a asp-controller="Catalog" 
+                           asp-action="Shop" 
+                           asp-route-SectionId="@parent_section.Id">
                             @parent_section.Name
                         </a>
                     </h4>

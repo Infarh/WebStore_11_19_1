@@ -1,10 +1,10 @@
 ﻿<div class="left-sidebar">
 
-    @*@await Component.InvokeAsync("Sections")*@
+    @*@await Component.InvokeAsync("Sections", new { SectionId = Context.Request.Query["SectionId"] })*@
 
     @*@await Component.InvokeAsync("Brands")*@
     
-    <vc:sections/>
+    <vc:sections section-id="@Context.Request.Query["SectionId"]"/>
     
     <vc:brands/>
 
