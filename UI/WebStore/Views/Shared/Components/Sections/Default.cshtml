@@ -17,7 +17,7 @@
                         </a>
                     </h4>
                 </div>
-                <div id="@parent_section.Name.ToLower()" class="panel-collapse collapse">
+                <div id="@parent_section.Name.ToLower()" class="panel-collapse collapse @(parent_section.Id == Model.CurrentParentSection ? "in" : null)">
                     <div class="panel-body">
                         <ul>
                             @foreach (var child_section in parent_section.ChildSections)
