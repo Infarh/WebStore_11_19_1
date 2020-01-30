@@ -13,7 +13,7 @@ namespace WebStore.TagHelpers
     public class ActiveRouteTagHelper : TagHelper // TagHelper обязательный суффикс имени класса
     {                                             // Имя таг-хелпера "ActiveRoute". Имя тега <active-route></active-route>
         public const string AttributeName = "is-active-route";
-
+        public const string IgnoreActionName = "ignore-action";
 
         [HtmlAttributeName("asp-action")]
         public string Action { get; set; }
@@ -35,13 +35,16 @@ namespace WebStore.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (IsActive())
+            var ignore_action = context.AllAttributes.ContainsName(IgnoreActionName); //.TryGetAttribute(IgnoreActionName, out _);
+
+            if (IsActive(ignore_action))
                 MakeActive(output);
 
             output.Attributes.RemoveAll(AttributeName);
+            output.Attributes.RemoveAll(IgnoreActionName);
         }
 
-        private bool IsActive()
+        private bool IsActive(bool IgnoreAction)
         {
             var route_values = ViewContext.RouteData.Values;
             var current_controller = route_values["Controller"].ToString();
@@ -52,7 +55,7 @@ namespace WebStore.TagHelpers
             if (!string.IsNullOrWhiteSpace(Controller) && !string.Equals(Controller, current_controller, ignore_case))
                 return false;
 
-            if (!string.IsNullOrWhiteSpace(Action) && !string.Equals(Action, current_action, ignore_case))
+            if (!IgnoreAction && !string.IsNullOrWhiteSpace(Action) && !string.Equals(Action, current_action, ignore_case))
                 return false;
 
             foreach (var (key, value) in RouteValues)
