@@ -19,9 +19,13 @@ namespace WebStore.Services.Product
            //.Include(section => section.Products)
            .AsEnumerable();
 
+        public Section GetSectionById(int id) => _db.Sections.FirstOrDefault(s => s.Id == id);
+
         public IEnumerable<Brand> GetBrands() => _db.Brands
            //.Include(brand => brand.Products)
            .AsEnumerable();
+
+        public Brand GetBrandById(int id) => _db.Brands.FirstOrDefault(b => b.Id == id);
 
         public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null)
         {
@@ -33,7 +37,11 @@ namespace WebStore.Services.Product
             if (Filter?.SectionId != null)
                 query = query.Where(product => product.SectionId == Filter.SectionId);
 
-            return query.AsEnumerable().Select(ProductMapper.ToDTO);
+            return query
+               .Include(p => p.Brand)
+               .Include(p => p.Section)
+               .AsEnumerable()
+               .Select(ProductMapper.ToDTO);
         }
 
         public ProductDTO GetProductById(int id) =>

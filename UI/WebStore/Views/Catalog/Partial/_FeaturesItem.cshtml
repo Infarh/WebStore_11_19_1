@@ -23,7 +23,7 @@
                         <div class="product-overlay">
                             <div class="overlay-content">
                                 <h2>@product.Price</h2>
-                                <p><a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">@product.Name</a></p>
+                                <p><a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id" asp-route-FromBrand="true">@product.Name</a></p>
                                 <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id"
                                    class="btn btn-default add-to-cart">
                                     <i class="fa fa-shopping-cart"></i>
