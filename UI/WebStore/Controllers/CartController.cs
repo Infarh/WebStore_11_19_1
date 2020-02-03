@@ -104,6 +104,8 @@ namespace WebStore.Controllers
             return Json(new { message = "Корзина очищена" });
         }
 
+        public IActionResult GetCartView() => ViewComponent("Cart");
+
         #endregion
     }
 }
