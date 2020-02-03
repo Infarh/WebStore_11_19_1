@@ -7,9 +7,9 @@
 @import url(http://fonts.googleapis.com/css?family=Abel);
 
 body {
-  font-family: 'Roboto', sans-serif;
-  position: relative;
-  font-weight:400;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    font-weight: 400;
 }
 
 ul li {

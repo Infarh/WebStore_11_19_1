@@ -13,7 +13,7 @@ namespace WebStore.Areas.Admin.Controllers
 
         public IActionResult Index() => View();
 
-        public IActionResult ProductList() => View(_ProductData.GetProducts());
+        public IActionResult ProductList() => View(_ProductData.GetProducts().Products);
 
         public IActionResult Edit(int? id) => View();
 
