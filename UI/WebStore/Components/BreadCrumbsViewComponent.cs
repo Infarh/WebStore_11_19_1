@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using WebStore.Controllers;
 using WebStore.Domain.DTO.Products;
 using WebStore.Domain.ViewModels.BreadCrumbs;
 using WebStore.Interfaces.Services;
@@ -15,8 +17,55 @@ namespace WebStore.Components
 
         public BreadCrumbsViewComponent(IProductData ProductData) => _ProductData = ProductData;
 
-        public IViewComponentResult Invoke(BreadCrumbsType Type, int id, BreadCrumbsType FromType)
+        private void GetParameters(out BreadCrumbsType Type, out int id, out BreadCrumbsType FromType)
         {
+            if (Request.Query.ContainsKey("SectionId"))
+            {
+                Type = BreadCrumbsType.Section;
+            }
+            else
+            {
+                Type = Request.Query.ContainsKey("BrandId")
+                    ? BreadCrumbsType.Brand
+                    : BreadCrumbsType.None;
+            }
+
+            if ((string)ViewContext.RouteData.Values["action"] == nameof(CatalogController.Details))
+            {
+                Type = BreadCrumbsType.Product;
+            }
+
+            id = 0;
+            FromType = BreadCrumbsType.Section;
+
+            switch (Type)
+            {
+                default: throw new ArgumentOutOfRangeException();
+
+                case BreadCrumbsType.None: break;
+
+                case BreadCrumbsType.Section:
+                    id = int.Parse(Request.Query["SectionId"].ToString());
+                    break;
+
+                case BreadCrumbsType.Brand:
+                    id = int.Parse(Request.Query["BrandId"].ToString());
+                    break;
+
+                case BreadCrumbsType.Product:
+                    id = int.Parse(ViewContext.RouteData.Values["id"].ToString());
+                    if (Request.Query.ContainsKey("FromBrand"))
+                    {
+                        FromType = BreadCrumbsType.Brand;
+                    }
+                    break;
+            }
+        }
+
+        public IViewComponentResult Invoke()
+        {
+            GetParameters(out var Type, out var id, out var FromType);
+
             switch (Type)
             {
                 default: return View(Array.Empty<BreadCrumbViewModel>());
