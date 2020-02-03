@@ -43,7 +43,13 @@ namespace WebStore.Controllers
                     Price = p.Price,
                     ImageUrl = p.ImageUrl,
                     Brand = p.Brand?.Name
-                }).OrderBy(p => p.Order)
+                }).OrderBy(p => p.Order),
+                PageViewModel = new PageViewModel
+                {
+                    PageSize = page_size ?? 0,
+                    PageNumber = Page,
+                    TotalItems = products.TotalCount
+                }
             });
         }
 
