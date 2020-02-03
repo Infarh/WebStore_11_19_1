@@ -46,7 +46,7 @@
                                 </div>
                             </td>
                             <td class="cart_total">
-                                <p class="cart_total_price">@((quantity * product.Price).ToString("C"))</p>
+                                <p class="cart_total_price" data-price="@(quantity * product.Price)">@((quantity * product.Price).ToString("C"))</p>
                             </td>
                             <td class="cart_delete">
                                 <a class="cart_quantity_delete" asp-action="RemoveFromCart" asp-route-id="@product.Id" data-id="@product.Id"><i class="fa fa-times"></i></a>
