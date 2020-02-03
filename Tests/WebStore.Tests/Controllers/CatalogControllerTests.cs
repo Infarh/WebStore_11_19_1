@@ -93,37 +93,43 @@ namespace WebStore.Tests.Controllers
         [TestMethod]
         public void Shop_Returns_Correct_View()
         {
+            var products = new[]
+            {
+                new ProductDTO
+                {
+                    Id = 1,
+                    Name = "Product 1",
+                    Order = 0,
+                    Price = 10m,
+                    ImageUrl = "Product1.png",
+                    Brand = new BrandDTO
+                    {
+                        Id = 1,
+                        Name = "Brand of product 1"
+                    }
+                },
+                new ProductDTO
+                {
+                    Id = 2,
+                    Name = "Product 2",
+                    Order = 1,
+                    Price = 20m,
+                    ImageUrl = "Product2.png",
+                    Brand = new BrandDTO
+                    {
+                        Id = 1,
+                        Name = "Brand of product 2"
+                    }
+                }
+            };
+
             var product_data_mock = new Mock<IProductData>();
             product_data_mock
                .Setup(p => p.GetProducts(It.IsAny<ProductFilter>()))
-               .Returns<ProductFilter>(filter => new[]
+               .Returns<ProductFilter>(filter => new PagedProductDTO
                 {
-                    new ProductDTO
-                    {
-                        Id = 1,
-                        Name = "Product 1",
-                        Order = 0,
-                        Price = 10m,
-                        ImageUrl = "Product1.png",
-                        Brand = new BrandDTO
-                        {
-                            Id = 1,
-                            Name = "Brand of product 1"
-                        }
-                    },
-                    new ProductDTO
-                    {
-                        Id = 2,
-                        Name = "Product 2",
-                        Order = 1,
-                        Price = 20m,
-                        ImageUrl = "Product2.png",
-                        Brand = new BrandDTO
-                        {
-                            Id = 1,
-                            Name = "Brand of product 2"
-                        }
-                    }
+                    Products = products,
+                    TotalCount = products.Length
                 });
 
             var controller = new CatalogController(product_data_mock.Object);
