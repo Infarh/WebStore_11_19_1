@@ -1,7 +1,10 @@
 ﻿Cart = {
     _properties: {
         getCartViewLink: "",
-        addToCartLink: ""
+        addToCartLink: "",
+        decrementLink: "",
+        removeFromCartLink: "",
+        removeAllLink: ""
     },
 
     init: function (properties) {
@@ -13,7 +16,7 @@
     initEvents: function () {
         $(".add-to-cart").click(Cart.addToCart);
         $(".cart_quantity_up").click(Cart.incrementItem);
-        //$(".cart_quantity_down").click(Cart.decrementItem);
+        $(".cart_quantity_down").click(Cart.decrementItem);
         //$(".cart_quantity_delete").click(Cart.removeFromCart);
     },
 
@@ -72,10 +75,20 @@
 
         var button = $(this);
         var id = button.data("id");
+        var container = button.closest("tr");
 
-        //$.get(Cart._properties. + "/" + id)
-        //    .done()
-        //    .fail(function () { console.log("decrementItem fail"); });
+        $.get(Cart._properties.decrementLink + "/" + id)
+            .done(function() {
+                var count = parseInt($(".cart_quantity_input", container).val());
+                if (count > 1) {
+                    $(".cart_quantity_input", container).val(count - 1);
+                    Cart.refreshPrice(container);
+                } else {
+                    container.remove();
+                    Cart.refreshTotalPrice();
+                }
+            })
+            .fail(function () { console.log("decrementItem fail"); });
     },
 
     removeFromCart: function (event) {
