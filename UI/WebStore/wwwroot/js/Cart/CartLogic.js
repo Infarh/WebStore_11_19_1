@@ -17,7 +17,7 @@
         $(".add-to-cart").click(Cart.addToCart);
         $(".cart_quantity_up").click(Cart.incrementItem);
         $(".cart_quantity_down").click(Cart.decrementItem);
-        //$(".cart_quantity_delete").click(Cart.removeFromCart);
+        $(".cart_quantity_delete").click(Cart.removeFromCart);
     },
 
     addToCart: function (event) {
@@ -83,6 +83,7 @@
                 if (count > 1) {
                     $(".cart_quantity_input", container).val(count - 1);
                     Cart.refreshPrice(container);
+                    Cart.refreshCartView();
                 } else {
                     container.remove();
                     Cart.refreshTotalPrice();
@@ -97,9 +98,13 @@
         var button = $(this);
         var id = button.data("id");
 
-        //$.get(Cart._properties.addToCartLink + "/" + id)
-        //    .done()
-        //    .fail(function () { console.log("removeFromCart fail"); });
+        $.get(Cart._properties.removeFromCartLink + "/" + id)
+            .done(function() {
+                button.closest("tr").remove();
+                Cart.refreshTotalPrice();
+                Cart.refreshCartView();
+            })
+            .fail(function () { console.log("removeFromCart fail"); });
     },
 
     refreshPrice: function(container) {
