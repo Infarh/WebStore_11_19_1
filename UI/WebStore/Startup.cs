@@ -13,6 +13,7 @@ using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Hubs;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
@@ -30,6 +31,8 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddResponseCompression(
                 opt =>
                 {
@@ -122,6 +125,11 @@ namespace WebStore
             app.UseSession();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseSignalR(route =>
+            {
+                route.MapHub<InformationHub>("/info");
+            });
 
             app.UseMvc(routes =>
             {
