@@ -16,7 +16,9 @@
             </div>
 
             <div class="col-sm-9 padding-right">
-                <partial name="Partial/_FeaturesItem" model="@Model.Products" />
+                <div>
+                    <partial name="Partial/_FeaturesItem" model="@Model.Products" />
+                </div>
                 
                 <paging page-model="@Model.PageViewModel"
                         page-action="Shop"
