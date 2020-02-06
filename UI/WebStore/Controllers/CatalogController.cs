@@ -85,7 +85,7 @@ namespace WebStore.Controllers
         public IActionResult GetFilteredItems(int? SectionId, int? BrandId, int Page)
         {
             var products = GetProducts(SectionId, BrandId, Page);
-            return PartialView("Partial/_FeaturesItem");
+            return PartialView("Partial/_FeaturesItem", products);
         }
 
         public IEnumerable<ProductViewModel> GetProducts(int? SectionId, int? BrandId, int Page)
