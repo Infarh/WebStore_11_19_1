@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "Ненавязчивый AJAX";
+}
+
+<h3>@ViewBag.Title</h3>
+
+<div class="row">
+    <div class="col-sm-4">
+        <h4>Рендринг на стороне сервера</h4>
+
+        <a class="btn btn-default"
+           data-ajax="true"
+           data-ajax-url="@Url.Action("GetTestView", "AjaxTest", new { id = 42, msg = "Test message" })"
+           data-ajax-update="#panel-server"
+           data-ajax-loading="#spinner-server">
+            Загрузка
+        </a>
+        
+        <span id="spinner-server" style="display: none">
+            <i class="fa fa-spinner fa-spin"></i>
+        </span>
+
+        <div id="panel-server"></div>
+    </div>
+
+    <div class="col-sm-4">
+        <h4>Рендринг на стороне клиента</h4>
+
+        <a class="btn btn-default"
+           data-ajax="true"
+           data-ajax-url="@Url.Action("GetJSON", "AjaxTest", new { id = 42, msg = "Test message" })"
+           data-ajax-loading="#spinner-client"
+           data-ajax-success="OnDataLoaded">
+            Загрузка
+        </a>
+        
+        <span id="spinner-client" style="display: none">
+            <i class="fa fa-spinner fa-spin"></i>
+        </span>
+
+        <div id="panel-client"></div>
+    </div>
+
+    <div class="col-sm-4">
+        <h4>Рендринг с помощью JS</h4>
+
+        <a class="btn btn-default" id="load-data-button">
+            Загрузка
+        </a>
+
+        <div id="panel-js"></div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script> 
+    
+    <script>
+        OnDataLoaded = data => {
+            var host = $("#panel-client");
+            host.empty();
+            host.append("msg: " + data.message);
+            host.append("<br/>time: " + data.serverTime);
+        }
+
+        $("#load-data-button").click(e => {
+            e.preventDefault();
+
+            console.log("Send data to server");
+
+            $.get("@Url.Action("GetJSON")", { id: 321, msg: "Hello World?" })
+                .done(data => {
+                    const host = $("#panel-js");
+                    host.empty();
+                    host.append(data.message);
+                    host.append("<br/>");
+                    host.append(data.serverTime);
+                });
+        });
+    </script>
+}
