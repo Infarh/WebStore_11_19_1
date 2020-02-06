@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -10,6 +12,8 @@ namespace WebStore.Controllers
 {
     public class CatalogController : Controller
     {
+        private const string __PageSize = "PageSize";
+
         private readonly IProductData _ProductData;
         private readonly IConfiguration _Configuration;
 
@@ -21,7 +25,7 @@ namespace WebStore.Controllers
 
         public IActionResult Shop(int? SectionId, int? BrandId, int Page = 1)
         {
-            var page_size = int.TryParse(_Configuration["PageSize"], out var size) ? size : (int?)null;
+            var page_size = int.TryParse(_Configuration[__PageSize], out var size) ? size : (int?)null;
 
             var products = _ProductData.GetProducts(new ProductFilter
             {
@@ -75,5 +79,36 @@ namespace WebStore.Controllers
                  Brand = product.Brand?.Name
             });
         }
+
+        #region API
+
+        public IActionResult GetFilteredItems(int? SectionId, int? BrandId, int Page)
+        {
+            var products = GetProducts(SectionId, BrandId, Page);
+            return PartialView("Partial/_FeaturesItem", products);
+        }
+
+        public IEnumerable<ProductViewModel> GetProducts(int? SectionId, int? BrandId, int Page)
+        {
+            var products_model = _ProductData.GetProducts(new ProductFilter
+            {
+                SectionId = SectionId,
+                BrandId = BrandId,
+                Page = Page,
+                PageSize = int.Parse(_Configuration[__PageSize])
+            });
+
+            return products_model.Products.Select(product => new ProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Order = product.Order,
+                Brand = product.Brand?.Name ?? string.Empty,
+                ImageUrl = product.ImageUrl
+            });
+        }
+
+        #endregion
     }
 }

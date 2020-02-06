@@ -1,6 +1,7 @@
 ﻿@model CatalogViewModel
 
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Shop";
 }
 
@@ -16,15 +17,31 @@
             </div>
 
             <div class="col-sm-9 padding-right">
-                <partial name="Partial/_FeaturesItem" model="@Model.Products" />
+                <div id="catalog-items-container">
+                    <partial name="Partial/_FeaturesItem" model="@Model.Products" />
+                </div>
                 
-                <paging page-model="@Model.PageViewModel"
-                        page-action="Shop"
-                        page-url-SectionId="@Model.SectionId"
-                        page-url-BrandId="@Model.BrandId">
-                </paging>
+                <div>
+                    <paging page-model="@Model.PageViewModel"
+                            page-action="Shop"
+                            page-url-SectionId="@Model.SectionId"
+                            page-url-BrandId="@Model.BrandId">
+                    </paging>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
+@section Scripts
+{
+    <script src="~/lib/jquery-loading-overlay/loadingoverlay.min.js"></script>
+    <script src="~/js/Shop/ProductItems.js" asp-append-version="true"></script>
+    <script>
+        $(function() {
+            ProductItems.init({
+                getUrl: "@Url.Action("GetFilteredItems", "Catalog")"
+            });
+        })
+    </script>
+}

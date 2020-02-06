@@ -13,6 +13,7 @@ using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Hubs;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
@@ -30,6 +31,16 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
+            services.AddResponseCompression(
+                opt =>
+                {
+                    opt.EnableForHttps = true;
+                    opt.ExcludedMimeTypes = new[] { "application/jpg" };
+                    //opt.Providers.Add<>();
+                });
+
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
             services.AddScoped<ICartService, CartService>();
@@ -103,6 +114,8 @@ namespace WebStore
                 app.UseBrowserLink();
             }
 
+            app.UseResponseCompression();
+
             app.UseStaticFiles();
             app.UseDefaultFiles();
             app.UseCookiePolicy();
@@ -112,6 +125,11 @@ namespace WebStore
             app.UseSession();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseSignalR(route =>
+            {
+                route.MapHub<InformationHub>("/info");
+            });
 
             app.UseMvc(routes =>
             {
