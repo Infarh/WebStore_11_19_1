@@ -19,16 +19,11 @@ namespace WebStore.Components
 
         private void GetParameters(out BreadCrumbsType Type, out int id, out BreadCrumbsType FromType)
         {
-            if (Request.Query.ContainsKey("SectionId"))
-            {
-                Type = BreadCrumbsType.Section;
-            }
-            else
-            {
-                Type = Request.Query.ContainsKey("BrandId")
+            Type = Request.Query.ContainsKey("SectionId")
+                ? BreadCrumbsType.Section
+                : Request.Query.ContainsKey("BrandId")
                     ? BreadCrumbsType.Brand
                     : BreadCrumbsType.None;
-            }
 
             if ((string)ViewContext.RouteData.Values["action"] == nameof(CatalogController.Details))
             {
@@ -93,29 +88,27 @@ namespace WebStore.Components
                     });
 
                 case BreadCrumbsType.Product:
-                    return View(GetProductBreadCrumbs(_ProductData.GetProductById(id), FromType));
+                    var product = _ProductData.GetProductById(id);
+                    return View(new[]
+                    {
+                        new BreadCrumbViewModel
+                        {
+                            BreadCrumbsType = FromType,
+                            Id = FromType == BreadCrumbsType.Section
+                                ? product.Section.Id.ToString()
+                                : product.Brand.Id.ToString(),
+                            Name = FromType == BreadCrumbsType.Section
+                                ? product.Section.Name
+                                : product.Brand.Name
+                        }, 
+                        new BreadCrumbViewModel
+                        {
+                            BreadCrumbsType = BreadCrumbsType.Product,
+                            Id = product.Id.ToString(),
+                            Name = product.Name
+                        }, 
+                    });
             }
         }
-
-        private IEnumerable<BreadCrumbViewModel> GetProductBreadCrumbs(ProductDTO Product, BreadCrumbsType FromType)
-            => new[]
-            {
-                new BreadCrumbViewModel
-                {
-                    BreadCrumbsType = FromType,
-                    Id = FromType == BreadCrumbsType.Section
-                         ? Product.Section.Id.ToString()
-                         : Product.Brand.Id.ToString(),
-                    Name = FromType == BreadCrumbsType.Section
-                           ? Product.Section.Name
-                           : Product.Brand.Name
-                }, 
-                new BreadCrumbViewModel
-                {
-                    BreadCrumbsType = BreadCrumbsType.Product,
-                    Id = Product.Id.ToString(),
-                    Name = Product.Name
-                }, 
-            };
     }
 }
